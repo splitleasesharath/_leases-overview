@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leases Selection Dashboard - Split Lease (Preview)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Reset & Global Styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --color-primary: #3182ce;
+      --color-primary-dark: #2c5282;
+      --color-secondary: #38b2ac;
+      --color-secondary-dark: #2c9a94;
+      --color-success: #38a169;
+      --color-success-light: #c6f6d5;
+      --color-warning: #dd6b20;
+      --color-warning-light: #fefcbf;
+      --color-error: #e53e3e;
+      --color-error-light: #fed7d7;
+      --color-gray-50: #f7fafc;
+      --color-gray-100: #edf2f7;
+      --color-gray-200: #e2e8f0;
+      --color-gray-300: #cbd5e0;
+      --color-gray-400: #a0aec0;
+      --color-gray-500: #718096;
+      --color-gray-600: #4a5568;
+      --color-gray-700: #2d3748;
+      --color-gray-800: #1a202c;
+      --color-white: #ffffff;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--color-gray-700);
+      background-color: var(--color-gray-50);
+      min-height: 100vh;
+    }
+
+    /* Header Styles */
+    .corporate-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      height: 72px;
+    }
+
+    .header-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: baseline;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .logo-text { color: #ffffff; }
+    .logo-dot { color: #38b2ac; font-size: 32px; margin: 0 1px; }
+    .logo-text-secondary { color: #a0d8ef; }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover { color: #ffffff; background: rgba(255, 255, 255, 0.1); }
+    .nav-link.active { color: #ffffff; background: rgba(255, 255, 255, 0.15); }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .header-btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .header-btn-primary {
+      background: #38b2ac;
+      color: #ffffff;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #38b2ac 0%, #2c9a94 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* Page Content */
+    .page-content {
+      padding-top: 88px;
+      padding-bottom: 48px;
+    }
+
+    .page-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--color-gray-800);
+    }
+
+    .btn-run-checks {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #38b2ac 0%, #2c9a94 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(56, 178, 172, 0.3);
+    }
+
+    .btn-run-checks:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(56, 178, 172, 0.4);
+    }
+
+    /* Filters Section */
+    .filters-section {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .lease-dropdown {
+      position: relative;
+      min-width: 280px;
+    }
+
+    .dropdown-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 12px 16px;
+      background: #ffffff;
+      border: 2px solid var(--color-gray-200);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      text-align: left;
+    }
+
+    .dropdown-trigger:hover { border-color: var(--color-gray-300); }
+
+    .dropdown-value { color: var(--color-gray-700); }
+    .dropdown-value.placeholder { color: var(--color-gray-400); }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid var(--color-gray-200);
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+      z-index: 100;
+      max-height: 320px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .dropdown-menu.show { display: block; }
+
+    .dropdown-option {
+      padding: 12px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--color-gray-50);
+    }
+
+    .dropdown-option:hover { background: var(--color-gray-50); }
+    .dropdown-option.selected { background: #ebf8ff; }
+
+    .option-label { font-size: 14px; font-weight: 500; color: var(--color-gray-700); }
+    .option-sublabel { font-size: 12px; color: var(--color-gray-500); }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      border: 2px solid var(--color-gray-200);
+      border-radius: 10px;
+      padding: 12px 16px;
+      flex: 1;
+      max-width: 600px;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    }
+
+    .search-icon { color: var(--color-gray-400); }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      color: var(--color-gray-700);
+      background: transparent;
+    }
+
+    .search-input::placeholder { color: var(--color-gray-400); }
+
+    .search-clear-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-gray-100);
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      color: var(--color-gray-500);
+    }
+
+    .search-clear-btn:hover { background: var(--color-gray-200); }
+
+    /* Results Info */
+    .results-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+
+    .results-count { font-size: 14px; color: var(--color-gray-500); }
+
+    .btn-clear-filters {
+      background: none;
+      border: none;
+      color: var(--color-primary);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Lease Card */
+    .leases-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .lease-card {
+      display: grid;
+      grid-template-columns: 120px 1fr 180px 100px 140px;
+      gap: 20px;
+      align-items: center;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--color-gray-200);
+      transition: all 0.2s ease;
+    }
+
+    .lease-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-color: var(--color-gray-300);
+    }
+
+    .lease-card-photo {
+      width: 120px;
+      height: 80px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .listing-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .lease-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .listing-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-gray-800);
+    }
+
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-active { background: #c6f6d5; color: #22543d; }
+    .status-pending { background: #fefcbf; color: #744210; }
+    .status-completed { background: #bee3f8; color: #2a4365; }
+    .status-draft { background: #e9d8fd; color: #553c9a; }
+
+    .details-row {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 6px;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .detail-label { font-size: 13px; color: var(--color-gray-500); }
+    .detail-value { font-size: 13px; color: var(--color-gray-700); font-weight: 500; }
+    .detail-value.schedule { color: var(--color-primary); font-style: italic; }
+
+    .lease-id {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .lease-id:hover { color: var(--color-primary); }
+
+    .copy-indicator {
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-success);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .copy-indicator.show { opacity: 1; }
+
+    .lease-card-status {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .status-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .status-label {
+      font-size: 11px;
+      color: var(--color-gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-value { font-size: 13px; font-weight: 500; }
+
+    .payment-paid { color: var(--color-success); }
+    .payment-partial { color: var(--color-warning); }
+    .payment-pending { color: var(--color-gray-500); }
+
+    .doc-complete { color: var(--color-success); }
+    .doc-pending { color: var(--color-warning); }
+    .doc-missing { color: var(--color-error); }
+
+    .payment-progress {
+      width: 100%;
+      height: 4px;
+      background: var(--color-gray-200);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .payment-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #38b2ac 0%, #38a169 100%);
+      border-radius: 2px;
+    }
+
+    .payment-amount { font-size: 11px; color: var(--color-gray-500); }
+
+    .lease-card-counts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .count-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .count-value { font-size: 18px; font-weight: 600; color: var(--color-gray-700); }
+    .count-label { font-size: 11px; color: var(--color-gray-500); }
+
+    .usability-badge {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      background: #c6f6d5;
+      color: #22543d;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .lease-card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-primary { background: var(--color-primary); color: #ffffff; }
+    .btn-primary:hover { background: var(--color-primary-dark); }
+
+    .btn-danger {
+      background: #fff5f5;
+      color: var(--color-error);
+      border: 1px solid #feb2b2;
+    }
+    .btn-danger:hover { background: #fed7d7; }
+
+    /* Footer */
+    .footer {
+      background: #1a202c;
+      color: #e2e8f0;
+      padding: 48px 0 24px;
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      gap: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #2d3748;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: baseline;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .footer-tagline { color: #a0aec0; font-size: 14px; }
+
+    .footer-links { display: flex; gap: 64px; }
+
+    .footer-column { display: flex; flex-direction: column; gap: 12px; }
+
+    .footer-column-title {
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-link {
+      color: #a0aec0;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .footer-link:hover { color: #38b2ac; }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+    }
+
+    .footer-copyright { color: #718096; font-size: 14px; }
+
+    /* Alert */
+    .alert-container {
+      position: fixed;
+      top: 88px;
+      right: 24px;
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .alert {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: #ffffff;
+      border-left: 4px solid;
+      animation: alertSlideIn 0.3s ease;
+    }
+
+    @keyframes alertSlideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .alert-success { border-left-color: var(--color-success); }
+    .alert-success .alert-icon { color: var(--color-success); }
+
+    .alert-info { border-left-color: var(--color-primary); }
+    .alert-info .alert-icon { color: var(--color-primary); }
+
+    .alert-message { font-size: 14px; color: var(--color-gray-700); }
+
+    .alert-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-gray-400);
+      padding: 4px;
+    }
+
+    /* Confirm Dialog */
+    .dialog-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+      padding: 24px;
+    }
+
+    .dialog-overlay.show { display: flex; }
+
+    .dialog-content {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .dialog-header { padding: 20px 24px 0; }
+    .dialog-title { font-size: 18px; font-weight: 600; color: var(--color-gray-800); }
+    .dialog-body { padding: 16px 24px; }
+    .dialog-message { font-size: 15px; color: var(--color-gray-600); }
+
+    .dialog-footer {
+      padding: 16px 24px 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .dialog-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+    }
+
+    .dialog-btn-cancel { background: var(--color-gray-100); color: var(--color-gray-600); }
+    .dialog-btn-danger { background: var(--color-error); color: #ffffff; }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .lease-card {
+        grid-template-columns: 100px 1fr 160px 140px;
+      }
+      .lease-card-counts { display: none; }
+    }
+
+    @media (max-width: 900px) {
+      .lease-card {
+        grid-template-columns: 1fr;
+      }
+      .lease-card-photo { width: 100%; height: 160px; }
+      .lease-card-status { flex-direction: row; flex-wrap: wrap; gap: 16px; }
+      .lease-card-actions { flex-direction: row; }
+      .btn { flex: 1; }
+      .header-nav { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .filters-section { flex-direction: column; }
+      .search-box { max-width: 100%; }
+      .lease-dropdown { min-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="corporate-header">
+    <div class="header-container">
+      <div class="logo">
+        <span class="logo-text">Split</span>
+        <span class="logo-dot">.</span>
+        <span class="logo-text-secondary">lease</span>
+      </div>
+      <nav class="header-nav">
+        <a href="#" class="nav-link">Dashboard</a>
+        <a href="#" class="nav-link">Listings</a>
+        <a href="#" class="nav-link active">Leases</a>
+        <a href="#" class="nav-link">Messages</a>
+      </nav>
+      <div class="header-right">
+        <button class="header-btn header-btn-secondary">Change Prices</button>
+        <button class="header-btn header-btn-primary">Manage Leases</button>
+        <div class="user-avatar">SL</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="page-container">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">Leases Selection Dashboard - Version Test</h1>
+        <button class="btn-run-checks" onclick="runChecks()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          Run Checks
+        </button>
+      </div>
+
+      <!-- Filters Section -->
+      <div class="filters-section">
+        <div class="lease-dropdown">
+          <button class="dropdown-trigger" onclick="toggleDropdown()">
+            <span class="dropdown-value placeholder" id="dropdownValue">Choose Lease</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-option" onclick="selectLease('')">
+              <span class="option-label">Choose Lease</span>
+              <span class="option-sublabel">Show all leases</span>
+            </div>
+            <div class="dropdown-option" onclick="selectLease('AGR-SF-2024-0001')">
+              <span class="option-label">AGR-SF-2024-0001</span>
+              <span class="option-sublabel">Modern Downtown Apartment</span>
+            </div>
+            <div class="dropdown-option" onclick="selectLease('AGR-SM-2024-0002')">
+              <span class="option-label">AGR-SM-2024-0002</span>
+              <span class="option-sublabel">Cozy Beach House</span>
+            </div>
+            <div class="dropdown-option" onclick="selectLease('AGR-LT-2024-0003')">
+              <span class="option-label">AGR-LT-2024-0003</span>
+              <span class="option-sublabel">Mountain Retreat Cabin</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-box">
+          <div class="search-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <input type="text" class="search-input" id="searchInput" placeholder="Search Lease by unique ID, agreement number, guest email, host email" oninput="filterLeases()">
+          <button class="search-clear-btn" onclick="clearSearch()" style="display: none;" id="clearBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Info -->
+      <div class="results-info">
+        <span class="results-count" id="resultsCount">5 leases found</span>
+        <button class="btn-clear-filters" onclick="clearFilters()" style="display: none;" id="clearFiltersBtn">Clear filters</button>
+      </div>
+
+      <!-- Leases List -->
+      <div class="leases-list" id="leasesList">
+        <!-- Lease Card 1 -->
+        <div class="lease-card" data-id="LEA-2024-001-ABCD" data-agreement="AGR-SF-2024-0001" data-guest="john.doe@email.com" data-host="host.sarah@splitlease.com" data-name="Modern Downtown Apartment">
+          <div class="lease-card-photo">
+            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=200" alt="Listing" class="listing-image">
+          </div>
+          <div class="lease-card-info">
+            <div class="lease-card-header">
+              <h3 class="listing-name">Modern Downtown Apartment</h3>
+              <span class="status-badge status-active">Active</span>
+            </div>
+            <div class="lease-card-details">
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Lease ID:</span>
+                  <span class="detail-value lease-id" onclick="copyLeaseId('LEA-2024-001-ABCD', this)">
+                    LEA-2024-001-ABCD
+                    <span class="copy-indicator">Copied!</span>
+                  </span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Agreement #:</span>
+                  <span class="detail-value">AGR-SF-2024-0001</span>
+                </div>
+              </div>
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Period:</span>
+                  <span class="detail-value">Jun 1, 2024 - Dec 31, 2024</span>
+                </div>
+              </div>
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Weekly Pattern:</span>
+                  <span class="detail-value schedule">Mon-Wed (Week A) / Thu-Sun (Week B)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lease-card-status">
+            <div class="status-item">
+              <span class="status-label">Proposal</span>
+              <span class="status-value status-active">Accepted</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Payment</span>
+              <span class="status-value payment-partial">Partial</span>
+              <div class="payment-progress">
+                <div class="payment-progress-bar" style="width: 67%"></div>
+              </div>
+              <span class="payment-amount">$3,000 / $4,500</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Documents</span>
+              <span class="status-value doc-complete">Complete</span>
+            </div>
+          </div>
+          <div class="lease-card-counts">
+            <div class="count-item">
+              <span class="count-value">2</span>
+              <span class="count-label">Stays</span>
+            </div>
+            <div class="count-item">
+              <span class="count-value">2</span>
+              <span class="count-label">Drafts</span>
+            </div>
+            <div class="usability-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              Usability
+            </div>
+          </div>
+          <div class="lease-card-actions">
+            <button class="btn btn-primary" onclick="viewDetails('LEA-2024-001-ABCD')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              Details
+            </button>
+            <button class="btn btn-danger" onclick="confirmDelete('LEA-2024-001-ABCD')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <!-- Lease Card 2 -->
+        <div class="lease-card" data-id="LEA-2024-002-EFGH" data-agreement="AGR-SM-2024-0002" data-guest="jane.smith@email.com" data-host="host.mike@splitlease.com" data-name="Cozy Beach House">
+          <div class="lease-card-photo">
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200" alt="Listing" class="listing-image">
+          </div>
+          <div class="lease-card-info">
+            <div class="lease-card-header">
+              <h3 class="listing-name">Cozy Beach House</h3>
+              <span class="status-badge status-pending">Pending</span>
+            </div>
+            <div class="lease-card-details">
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Lease ID:</span>
+                  <span class="detail-value lease-id" onclick="copyLeaseId('LEA-2024-002-EFGH', this)">
+                    LEA-2024-002-EFGH
+                    <span class="copy-indicator">Copied!</span>
+                  </span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Agreement #:</span>
+                  <span class="detail-value">AGR-SM-2024-0002</span>
+                </div>
+              </div>
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Period:</span>
+                  <span class="detail-value">Aug 1, 2024 - Jan 31, 2025</span>
+                </div>
+              </div>
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Weekly Pattern:</span>
+                  <span class="detail-value schedule">Fri-Sun (Every Week)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lease-card-status">
+            <div class="status-item">
+              <span class="status-label">Proposal</span>
+              <span class="status-value status-pending">Pending</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Payment</span>
+              <span class="status-value payment-pending">Pending</span>
+              <div class="payment-progress">
+                <div class="payment-progress-bar" style="width: 0%"></div>
+              </div>
+              <span class="payment-amount">$0 / $7,500</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Documents</span>
+              <span class="status-value doc-pending">Pending</span>
+            </div>
+          </div>
+          <div class="lease-card-counts">
+            <div class="count-item">
+              <span class="count-value">0</span>
+              <span class="count-label">Stays</span>
+            </div>
+            <div class="count-item">
+              <span class="count-value">1</span>
+              <span class="count-label">Drafts</span>
+            </div>
+          </div>
+          <div class="lease-card-actions">
+            <button class="btn btn-primary" onclick="viewDetails('LEA-2024-002-EFGH')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              Details
+            </button>
+            <button class="btn btn-danger" onclick="confirmDelete('LEA-2024-002-EFGH')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <!-- Lease Card 3 -->
+        <div class="lease-card" data-id="LEA-2024-003-IJKL" data-agreement="AGR-LT-2024-0003" data-guest="bob.wilson@email.com" data-host="host.sarah@splitlease.com" data-name="Mountain Retreat Cabin">
+          <div class="lease-card-photo">
+            <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=200" alt="Listing" class="listing-image">
+          </div>
+          <div class="lease-card-info">
+            <div class="lease-card-header">
+              <h3 class="listing-name">Mountain Retreat Cabin</h3>
+              <span class="status-badge status-active">Active</span>
+            </div>
+            <div class="lease-card-details">
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Lease ID:</span>
+                  <span class="detail-value lease-id" onclick="copyLeaseId('LEA-2024-003-IJKL', this)">
+                    LEA-2024-003-IJKL
+                    <span class="copy-indicator">Copied!</span>
+                  </span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Agreement #:</span>
+                  <span class="detail-value">AGR-LT-2024-0003</span>
+                </div>
+              </div>
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Period:</span>
+                  <span class="detail-value">Jul 15, 2024 - Feb 28, 2025</span>
+                </div>
+              </div>
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Weekly Pattern:</span>
+                  <span class="detail-value schedule">Full Week (Alternating)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lease-card-status">
+            <div class="status-item">
+              <span class="status-label">Proposal</span>
+              <span class="status-value" style="color: #dd6b20;">Countered</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Payment</span>
+              <span class="status-value payment-paid">Paid</span>
+              <div class="payment-progress">
+                <div class="payment-progress-bar" style="width: 100%"></div>
+              </div>
+              <span class="payment-amount">$6,000 / $6,000</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Documents</span>
+              <span class="status-value doc-complete">Complete</span>
+            </div>
+          </div>
+          <div class="lease-card-counts">
+            <div class="count-item">
+              <span class="count-value">1</span>
+              <span class="count-label">Stays</span>
+            </div>
+            <div class="count-item">
+              <span class="count-value">3</span>
+              <span class="count-label">Drafts</span>
+            </div>
+            <div class="usability-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              Usability
+            </div>
+          </div>
+          <div class="lease-card-actions">
+            <button class="btn btn-primary" onclick="viewDetails('LEA-2024-003-IJKL')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              Details
+            </button>
+            <button class="btn btn-danger" onclick="confirmDelete('LEA-2024-003-IJKL')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <!-- Lease Card 4 -->
+        <div class="lease-card" data-id="LEA-2024-004-MNOP" data-agreement="AGR-SF-2024-0004" data-guest="alice.johnson@email.com" data-host="host.mike@splitlease.com" data-name="Modern Downtown Apartment">
+          <div class="lease-card-photo">
+            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=200" alt="Listing" class="listing-image">
+          </div>
+          <div class="lease-card-info">
+            <div class="lease-card-header">
+              <h3 class="listing-name">Modern Downtown Apartment</h3>
+              <span class="status-badge status-completed">Completed</span>
+            </div>
+            <div class="lease-card-details">
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Lease ID:</span>
+                  <span class="detail-value lease-id" onclick="copyLeaseId('LEA-2024-004-MNOP', this)">
+                    LEA-2024-004-MNOP
+                    <span class="copy-indicator">Copied!</span>
+                  </span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Agreement #:</span>
+                  <span class="detail-value">AGR-SF-2024-0004</span>
+                </div>
+              </div>
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Period:</span>
+                  <span class="detail-value">Jan 1, 2024 - Jun 30, 2024</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lease-card-status">
+            <div class="status-item">
+              <span class="status-label">Payment</span>
+              <span class="status-value payment-paid">Paid</span>
+              <div class="payment-progress">
+                <div class="payment-progress-bar" style="width: 100%"></div>
+              </div>
+              <span class="payment-amount">$9,000 / $9,000</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Documents</span>
+              <span class="status-value doc-complete">Complete</span>
+            </div>
+          </div>
+          <div class="lease-card-counts">
+            <div class="count-item">
+              <span class="count-value">0</span>
+              <span class="count-label">Stays</span>
+            </div>
+          </div>
+          <div class="lease-card-actions">
+            <button class="btn btn-primary" onclick="viewDetails('LEA-2024-004-MNOP')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              Details
+            </button>
+            <button class="btn btn-danger" onclick="confirmDelete('LEA-2024-004-MNOP')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <!-- Lease Card 5 -->
+        <div class="lease-card" data-id="LEA-2024-005-QRST" data-agreement="AGR-SM-2024-0005" data-guest="charlie.brown@email.com" data-host="host.sarah@splitlease.com" data-name="Cozy Beach House">
+          <div class="lease-card-photo">
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200" alt="Listing" class="listing-image">
+          </div>
+          <div class="lease-card-info">
+            <div class="lease-card-header">
+              <h3 class="listing-name">Cozy Beach House</h3>
+              <span class="status-badge status-draft">Draft</span>
+            </div>
+            <div class="lease-card-details">
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Lease ID:</span>
+                  <span class="detail-value lease-id" onclick="copyLeaseId('LEA-2024-005-QRST', this)">
+                    LEA-2024-005-QRST
+                    <span class="copy-indicator">Copied!</span>
+                  </span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Agreement #:</span>
+                  <span class="detail-value">AGR-SM-2024-0005</span>
+                </div>
+              </div>
+              <div class="details-row">
+                <div class="detail-item">
+                  <span class="detail-label">Period:</span>
+                  <span class="detail-value">Jan 1, 2025 - Jun 30, 2025</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lease-card-status">
+            <div class="status-item">
+              <span class="status-label">Payment</span>
+              <span class="status-value payment-pending">Pending</span>
+              <div class="payment-progress">
+                <div class="payment-progress-bar" style="width: 0%"></div>
+              </div>
+              <span class="payment-amount">$0 / $0</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Documents</span>
+              <span class="status-value doc-missing">Missing</span>
+            </div>
+          </div>
+          <div class="lease-card-counts">
+            <div class="count-item">
+              <span class="count-value">0</span>
+              <span class="count-label">Stays</span>
+            </div>
+          </div>
+          <div class="lease-card-actions">
+            <button class="btn btn-primary" onclick="viewDetails('LEA-2024-005-QRST')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              Details
+            </button>
+            <button class="btn btn-danger" onclick="confirmDelete('LEA-2024-005-QRST')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="logo-text">Split</span>
+            <span class="logo-dot">.</span>
+            <span class="logo-text-secondary">lease</span>
+          </div>
+          <p class="footer-tagline">Flexible home sharing for modern living</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4 class="footer-column-title">Platform</h4>
+            <a href="#" class="footer-link">How It Works</a>
+            <a href="#" class="footer-link">For Hosts</a>
+            <a href="#" class="footer-link">For Guests</a>
+          </div>
+          <div class="footer-column">
+            <h4 class="footer-column-title">Support</h4>
+            <a href="#" class="footer-link">Help Center</a>
+            <a href="#" class="footer-link">Contact Us</a>
+            <a href="#" class="footer-link">FAQ</a>
+          </div>
+          <div class="footer-column">
+            <h4 class="footer-column-title">Legal</h4>
+            <a href="#" class="footer-link">Privacy Policy</a>
+            <a href="#" class="footer-link">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">&copy; 2024 Split.lease. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alert Container -->
+  <div class="alert-container" id="alertContainer"></div>
+
+  <!-- Delete Confirmation Dialog -->
+  <div class="dialog-overlay" id="deleteDialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 class="dialog-title">Delete Booking</h3>
+      </div>
+      <div class="dialog-body">
+        <p class="dialog-message">Are you sure you want to delete this booking? This action cannot be undone.</p>
+      </div>
+      <div class="dialog-footer">
+        <button class="dialog-btn dialog-btn-cancel" onclick="closeDeleteDialog()">Cancel</button>
+        <button class="dialog-btn dialog-btn-danger" onclick="deleteBooking()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let selectedLease = '';
+    let searchQuery = '';
+    let bookingToDelete = null;
+
+    // Toggle dropdown
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      const dropdown = document.querySelector('.lease-dropdown');
+      if (!dropdown.contains(e.target)) {
+        document.getElementById('dropdownMenu').classList.remove('show');
+      }
+    });
+
+    // Select lease from dropdown
+    function selectLease(agreement) {
+      selectedLease = agreement;
+      const valueEl = document.getElementById('dropdownValue');
+
+      if (agreement) {
+        valueEl.textContent = agreement;
+        valueEl.classList.remove('placeholder');
+      } else {
+        valueEl.textContent = 'Choose Lease';
+        valueEl.classList.add('placeholder');
+      }
+
+      document.getElementById('dropdownMenu').classList.remove('show');
+      filterLeases();
+    }
+
+    // Filter leases
+    function filterLeases() {
+      searchQuery = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.lease-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const id = card.dataset.id.toLowerCase();
+        const agreement = card.dataset.agreement.toLowerCase();
+        const guest = card.dataset.guest.toLowerCase();
+        const host = card.dataset.host.toLowerCase();
+        const name = card.dataset.name.toLowerCase();
+
+        const matchesSearch = !searchQuery ||
+          id.includes(searchQuery) ||
+          agreement.includes(searchQuery) ||
+          guest.includes(searchQuery) ||
+          host.includes(searchQuery) ||
+          name.includes(searchQuery);
+
+        const matchesLease = !selectedLease || agreement === selectedLease.toLowerCase();
+
+        if (matchesSearch && matchesLease) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Update results count
+      document.getElementById('resultsCount').textContent =
+        `${visibleCount} ${visibleCount === 1 ? 'lease' : 'leases'} found`;
+
+      // Show/hide clear buttons
+      document.getElementById('clearBtn').style.display = searchQuery ? '' : 'none';
+      document.getElementById('clearFiltersBtn').style.display =
+        (searchQuery || selectedLease) ? '' : 'none';
+    }
+
+    // Clear search
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      filterLeases();
+    }
+
+    // Clear all filters
+    function clearFilters() {
+      document.getElementById('searchInput').value = '';
+      selectLease('');
+    }
+
+    // Copy lease ID to clipboard
+    function copyLeaseId(id, element) {
+      navigator.clipboard.writeText(id).then(() => {
+        const indicator = element.querySelector('.copy-indicator');
+        indicator.classList.add('show');
+        setTimeout(() => indicator.classList.remove('show'), 2000);
+        showAlert('success', `Lease ID "${id}" copied to clipboard!`);
+      });
+    }
+
+    // View details
+    function viewDetails(id) {
+      showAlert('info', `Navigating to details for ${id}...`);
+    }
+
+    // Confirm delete
+    function confirmDelete(id) {
+      bookingToDelete = id;
+      document.getElementById('deleteDialog').classList.add('show');
+    }
+
+    // Close delete dialog
+    function closeDeleteDialog() {
+      document.getElementById('deleteDialog').classList.remove('show');
+      bookingToDelete = null;
+    }
+
+    // Delete booking
+    function deleteBooking() {
+      if (bookingToDelete) {
+        const card = document.querySelector(`[data-id="${bookingToDelete}"]`);
+        if (card) {
+          card.remove();
+          filterLeases();
+          showAlert('success', 'Booking deleted successfully');
+        }
+      }
+      closeDeleteDialog();
+    }
+
+    // Run checks
+    function runChecks() {
+      showAlert('info', 'Running validation checks...');
+      setTimeout(() => {
+        showAlert('success', 'All checks completed successfully!');
+      }, 1500);
+    }
+
+    // Show alert
+    function showAlert(type, message) {
+      const container = document.getElementById('alertContainer');
+      const alert = document.createElement('div');
+      alert.className = `alert alert-${type}`;
+      alert.innerHTML = `
+        <div class="alert-icon">
+          ${type === 'success' ?
+            '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' :
+            '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+          }
+        </div>
+        <span class="alert-message">${message}</span>
+        <button class="alert-close" onclick="this.parentElement.remove()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      `;
+      container.appendChild(alert);
+
+      setTimeout(() => {
+        alert.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
