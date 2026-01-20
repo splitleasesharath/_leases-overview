@@ -1,0 +1,125 @@
+/* Alert Styles - Split Lease */
+
+.alert-container {
+  position: fixed;
+  top: 88px;
+  right: 24px;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: alertSlideIn 0.3s ease;
+  background: #ffffff;
+  border-left: 4px solid;
+}
+
+.alert-exit {
+  animation: alertSlideOut 0.3s ease forwards;
+}
+
+@keyframes alertSlideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes alertSlideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Alert Types */
+.alert-success {
+  border-left-color: #38a169;
+}
+
+.alert-success .alert-icon {
+  color: #38a169;
+}
+
+.alert-error {
+  border-left-color: #e53e3e;
+}
+
+.alert-error .alert-icon {
+  color: #e53e3e;
+}
+
+.alert-warning {
+  border-left-color: #dd6b20;
+}
+
+.alert-warning .alert-icon {
+  color: #dd6b20;
+}
+
+.alert-info {
+  border-left-color: #3182ce;
+}
+
+.alert-info .alert-icon {
+  color: #3182ce;
+}
+
+.alert-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alert-message {
+  flex: 1;
+  font-size: 14px;
+  color: #2d3748;
+  line-height: 1.4;
+}
+
+.alert-close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a0aec0;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.alert-close:hover {
+  background: #f7fafc;
+  color: #4a5568;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .alert-container {
+    left: 16px;
+    right: 16px;
+    max-width: none;
+  }
+}

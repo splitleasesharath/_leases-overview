@@ -1,0 +1,399 @@
+/* LeaseCard Styles - Split Lease */
+
+.lease-card {
+  display: grid;
+  grid-template-columns: 120px 1fr 180px 100px 140px;
+  gap: 20px;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.lease-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e0;
+}
+
+/* Photo Section */
+.lease-card-photo {
+  width: 120px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.listing-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Info Section */
+.lease-card-info {
+  min-width: 0;
+}
+
+.lease-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.listing-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Status Badge Colors */
+.status-active {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.status-pending {
+  background: #fefcbf;
+  color: #744210;
+}
+
+.status-completed {
+  background: #bee3f8;
+  color: #2a4365;
+}
+
+.status-terminated {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.status-expired {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.status-draft {
+  background: #e9d8fd;
+  color: #553c9a;
+}
+
+.status-default {
+  background: #edf2f7;
+  color: #4a5568;
+}
+
+/* Details */
+.lease-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.details-row {
+  display: flex;
+  gap: 24px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-label {
+  font-size: 13px;
+  color: #718096;
+}
+
+.detail-value {
+  font-size: 13px;
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.detail-value.schedule {
+  color: #3182ce;
+  font-style: italic;
+}
+
+.lease-id {
+  position: relative;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.lease-id:hover {
+  color: #3182ce;
+}
+
+.lease-id.clickable::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2'%3E%3Crect x='9' y='9' width='13' height='13' rx='2' ry='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+  background-size: contain;
+  vertical-align: middle;
+}
+
+.copy-indicator {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #38a169;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.copy-indicator.show {
+  opacity: 1;
+}
+
+/* Status Section */
+.lease-card-status {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.status-label {
+  font-size: 11px;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-value {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Payment Status Colors */
+.payment-paid {
+  color: #38a169;
+}
+
+.payment-partial {
+  color: #dd6b20;
+}
+
+.payment-pending {
+  color: #718096;
+}
+
+.payment-overdue {
+  color: #e53e3e;
+}
+
+.payment-refunded {
+  color: #805ad5;
+}
+
+/* Document Status Colors */
+.doc-complete {
+  color: #38a169;
+}
+
+.doc-pending {
+  color: #dd6b20;
+}
+
+.doc-missing {
+  color: #e53e3e;
+}
+
+.doc-expired {
+  color: #718096;
+}
+
+/* Payment Progress */
+.payment-progress {
+  width: 100%;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.payment-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #38b2ac 0%, #38a169 100%);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.payment-amount {
+  font-size: 11px;
+  color: #718096;
+}
+
+/* Counts Section */
+.lease-card-counts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.count-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.count-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.count-label {
+  font-size: 11px;
+  color: #718096;
+}
+
+.usability-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: #c6f6d5;
+  color: #22543d;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Actions Section */
+.lease-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: #3182ce;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #2c5282;
+}
+
+.btn-danger {
+  background: #fff5f5;
+  color: #e53e3e;
+  border: 1px solid #feb2b2;
+}
+
+.btn-danger:hover {
+  background: #fed7d7;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .lease-card {
+    grid-template-columns: 100px 1fr 160px 140px;
+    gap: 16px;
+  }
+
+  .lease-card-counts {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .lease-card {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .lease-card-photo {
+    width: 100%;
+    height: 160px;
+  }
+
+  .lease-card-header {
+    flex-wrap: wrap;
+  }
+
+  .lease-card-status {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .lease-card-actions {
+    flex-direction: row;
+  }
+
+  .btn {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .lease-card {
+    padding: 16px;
+  }
+
+  .details-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .lease-card-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
